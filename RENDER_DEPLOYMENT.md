@@ -15,7 +15,7 @@ Your `GEMINI_API_KEY` and `CHROMA_API_KEY` stay strictly on Render's backend ser
 3. Connect your GitHub repository and configure:
    - **Runtime**: `Node`
    - **Instance Type**: `Free` ($0/month, 512 MB RAM)
-   - **Build Command**: `npm install && npm run build:server`
+   - **Build Command**: `npm install --include=dev --legacy-peer-deps && npm run build:server`
    - **Start Command**: `npm start`
    - **Health Check Path**: `/api/health`
 4. Under **Environment → Environment Variables**, add:
