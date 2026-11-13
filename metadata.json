@@ -1,0 +1,6 @@
+{
+  "name": "Hindustan University RAG Portal",
+  "description": "Comprehensive university portal and intelligent Retrieval-Augmented Generation (RAG) assistant for Hindustan University powered by ChromaDB and Gemini.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
