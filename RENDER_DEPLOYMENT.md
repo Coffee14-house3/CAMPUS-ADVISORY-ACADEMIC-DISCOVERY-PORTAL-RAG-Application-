@@ -29,6 +29,9 @@ Your `GEMINI_API_KEY` and `CHROMA_API_KEY` stay strictly on Render's backend ser
 | `CHROMA_TENANT` | Your ChromaDB Tenant ID |
 | `CHROMA_DATABASE` | `internship` |
 | `ALLOWED_ORIGINS` | `https://<your-github-username>.github.io` |
+| `QUERY_NOTIFICATION_EMAIL` | `25sp2180007@student.hindustanuniv.ac.in` |
+| `SMTP_USER` | Gmail address used to send notification emails |
+| `SMTP_PASS` | 16-character Google App Password for `SMTP_USER` |
 
 5. Click **Create Web Service** and copy your live Render URL once deployed, e.g. `https://hindustan-univ-rag-api.onrender.com`.
 6. Verify `https://<your-service>.onrender.com/api/health` returns `{"status":"ok", ...}`.

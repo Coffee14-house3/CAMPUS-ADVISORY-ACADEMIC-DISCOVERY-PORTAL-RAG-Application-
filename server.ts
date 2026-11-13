@@ -5,6 +5,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { initChromaClient, getChromaStatus, getAllDocuments, addDocument, seedChromaCollection, queryRelevantKnowledge } from './server/chromaService';
 import { processRagQuery, generateMasterRagPromptArtifact } from './server/ragEngine';
+import { sendQueryNotificationEmail, sendAdmissionInquiryEmail } from './server/emailService';
 import { AVAILABLE_MODELS } from './server/llmProviders';
 import { RagQueryRequest } from './src/types';
 
@@ -77,6 +78,16 @@ async function startServer() {
         thinkingLevel,
         systemPrompt,
         categoryFilter,
+      });
+
+      void sendQueryNotificationEmail({
+        query: query.trim(),
+        answer: result.answer,
+        categoryFilter,
+        sourcesCount: result.retrievedChunks.length,
+        latencyMs: result.latencyMs,
+      }).catch((emailErr) => {
+        console.warn('[EmailService] Background query email failed:', emailErr);
       });
 
       res.json(result);
@@ -160,12 +171,29 @@ async function startServer() {
   });
 
   // Admission Inquiry Handler
-  app.post('/api/admissions/inquiry', (req, res) => {
+  app.post('/api/admissions/inquiry', async (req, res) => {
     const { name, email, phone, course, state, marks } = req.body;
-    console.log('[Admission Inquiry Received]:', { name, email, phone, course, state, marks });
+    if (!name || !email || !phone || !course) {
+      return res.status(400).json({ error: 'Name, email, phone, and course are required.' });
+    }
+
+    const applicationId = `HITS-${Math.floor(100000 + Math.random() * 900000)}`;
+    console.log('[Admission Inquiry Received]:', { applicationId, name, email, phone, course, state, marks });
+
+    const emailResult = await sendAdmissionInquiryEmail({
+      applicationId,
+      name,
+      email,
+      phone,
+      course,
+      state,
+      marks,
+    });
+
     res.json({
       success: true,
-      applicationId: `HITS-${Math.floor(100000 + Math.random() * 900000)}`,
+      applicationId,
+      emailed: emailResult.sent,
       message: 'Admission inquiry registered successfully. Our admissions counselor will contact you shortly.',
     });
   });

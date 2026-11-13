@@ -22,3 +22,9 @@ services:
         sync: false
       - key: CHROMA_DATABASE
         value: internship
+      - key: QUERY_NOTIFICATION_EMAIL
+        value: 25sp2180007@student.hindustanuniv.ac.in
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
